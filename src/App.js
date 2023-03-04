@@ -4,7 +4,8 @@ import './App.css';
 
 function App() {
 
-  const projects = [ {title: 'Project 1', tasks: {tasks: [ {title: 'task1', description: 'task 1 description is nice and long', complete: true, date: new Date(2023,3,2) }, {title: 'task2', description: 'task 2 description is nice and long', complete: false, date: new Date(2023,3,2) }], total: 2, completed: 1 } }, {title: 'Project 2', tasks: {tasks: [ {title: 'p2task1', description: 'Project2 task 1 description is nice and long', complete: true, date: new Date(2023,3,2) }, {title: 'P2task2', description: 'Project 2 task 2 description is nice and long', complete: false, date: new Date(2023,3,2) }], total: 2, completed: 1 } }];
+  const data = {projectArr:[ {title: 'Project 1', tasks: {tasks: [ {title: 'task1', description: 'task 1 description is nice and long', complete: true, date: new Date(2023,3,2) }, {title: 'task2', description: 'task 2 description is nice and long', complete: false, date: new Date(2023,3,2) }], total: 2, completed: 1 } }, {title: 'Project 2', tasks: {tasks: [ {title: 'p2task1', description: 'Project2 task 1 description is nice and long', complete: true, date: new Date(2023,3,2) }, {title: 'P2task2', description: 'Project 2 task 2 description is nice and long', complete: false, date: new Date(2023,3,2) }], total: 2, completed: 1 } }]};
+  const projects = data.projectArr;
   const selectedProject = projects[0]
   const tasks = selectedProject.tasks.tasks;
   const selectedDate = new Date(Date.now());
