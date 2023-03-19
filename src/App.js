@@ -24,6 +24,12 @@ function App() {
 
   return (
     <div className="App">
+      <section class="hero">
+        <div class="hero-text">
+          <h1>Organize Your Tasks with Ease</h1>
+          <p>Keep track of your to-dos and never miss a deadline again with our intuitive task management system.</p>
+        </div>
+      </section>
 
       <div className='Projects' >
       <h3> Projects </h3>
@@ -68,11 +74,10 @@ function App() {
 
       <div className='Calendar'>
         <h3> Calendar</h3>
-        <h4> {selectedDate.toLocaleString('default', { month: 'long' }) } </h4>
           <div className='column'>
             <ul>
-              <li key={selectedDate.getDate()}>
-                <h4>{ selectedDate.getDate() }</h4>
+              <li className = 'currentDate' key={selectedDate.getDate()}>
+                <h4>{ selectedDate.getDate() }  {selectedDate.toLocaleString('default', { month: 'long' }) }</h4>
                 <article> {weekday[selectedDate.getDay()]} </article>
               </li>
               <li key={day1.getDate()}>

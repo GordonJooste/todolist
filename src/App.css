@@ -4,9 +4,10 @@
   grid-template-columns: 3fr 5fr 2fr;
   grid-gap: 1rem;
   padding: 1rem;
-  background-color: #F5F5F5;
-  color: #333;
+  background-color: #F9F9F9;
+  color: #3D3D3D;
 }
+
 
 .Projects {
   grid-column: 1 / 2;
@@ -24,6 +25,7 @@ h3 {
   margin-top: 0;
   font-size: 1.5rem;
   font-weight: bold;
+  color: #8999ae;
 }
 
 ul {
@@ -36,8 +38,8 @@ li {
   padding: 0.5rem;
   border-radius: 0.25rem;
   margin-bottom: 0.5rem;
-  background-color: #FFF;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  background-color: #f2f2f2;
+  box-shadow: 0 2px 3px #B0C4DE;
 }
 
 li input[type="checkbox"] {
@@ -56,10 +58,12 @@ li input[type="checkbox"] {
 
 h4 {
   font-size: 1.2rem;
+  color: #8999ae;
 }
 
 h5 {
   margin-top: 0;
+  color: #8999ae
 }
 
 article {
@@ -67,3 +71,33 @@ article {
   font-size: 0.9rem;
   color: #666;
 }
+
+.currentDate {
+  background-color: #a8c5eb;
+}
+.currentDate h4 {
+  color: #F9F9F9
+}
+.currentDate article {
+  color: #F9F9F9
+}
+
+.hero {
+  grid-column: 1/4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.hero-text {
+  flex-basis: 60%;
+  padding-right: 1rem;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  color: #B0C4DE
+}
+
