@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
+import { selectProjectArr } from './features/projects/projectsSlice';
 
 function App() {
 
-  const data = {projectArr:[ {title: 'Project 1', tasks: {tasks: [ {title: 'task1', description: 'task 1 description is nice and long', complete: true, date: new Date(2023,3,2) }, {title: 'task2', description: 'task 2 description is nice and long', complete: false, date: new Date(2023,3,2) }], total: 2, completed: 1 } }, {title: 'Project 2', tasks: {tasks: [ {title: 'p2task1', description: 'Project2 task 1 description is nice and long', complete: true, date: new Date(2023,3,2) }, {title: 'P2task2', description: 'Project 2 task 2 description is nice and long', complete: false, date: new Date(2023,3,2) }], total: 2, completed: 1 } }]};
-  const projects = data.projectArr;
+  const dispatch = useDispatch();
+  const projects = useSelector(selectProjectArr);
+
   const selectedProject = projects[0]
   const tasks = selectedProject.tasks.tasks;
   const selectedDate = new Date(Date.now());
   const {day1,day2,day3,day4,day5} = { day1: new Date(selectedDate.getTime()+100000000),day2:new Date(selectedDate.getTime()+200000000),day3:new Date(selectedDate.getTime()+300000000),day4:new Date(selectedDate.getTime()+400000000),day5: new Date(selectedDate.getTime()+500000000)};
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   let checked = false;
+
+
 
   const handleClick = (e)=>{
     console.log('you clicked the box!');
@@ -51,9 +55,6 @@ function App() {
       <div className='Todo'>
           <h3>All Tasks for today</h3>
           <div className='column'>
-          <div>
-              TODO Add Task
-          </div>
             <ul>
             {tasks.map(task =>{
               return (
@@ -66,6 +67,9 @@ function App() {
                 )
             })}
             </ul>
+          <div>
+              TODO Add Task
+          </div>
             <div className='statistics'>
               <h4>{(selectedProject.tasks.completed/selectedProject.tasks.total)*100} % Completed</h4>
             </div>
