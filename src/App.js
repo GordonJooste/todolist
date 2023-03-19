@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
-import { selectProjectArr } from './features/projects/projectsSlice';
+import { selectProjectArr, addTask, addProject, removeProject, removeTask } from './features/projects/projectsSlice';
 
 function App() {
 
@@ -15,12 +15,21 @@ function App() {
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   let checked = false;
 
+  const [newTask, setNewTask] = useState({});
 
+  const handleNewTaskChange = (event) => {
+    const { name, value } = event.target;
+    setNewTask((prevTask) => ({
+      ...prevTask,
+      [name]: value,
+    }));
+  };
 
-  const handleClick = (e)=>{
-    console.log('you clicked the box!');
-    return !checked;
-  }
+  const handleNewTaskSubmit = (event) => {
+    event.preventDefault();
+    dispatch(addTask({ ...newTask }));
+    setNewTask({});
+  };
 
   //make the checkboxes work
   // set up the state and redux store
@@ -57,9 +66,10 @@ function App() {
           <div className='column'>
             <ul>
             {tasks.map(task =>{
+              console.log(tasks);
               return (
                 <li key={task.title}>
-                  <input type="checkbox" checked={checked} onClick={handleClick()}/>
+                  <input type="checkbox" checked={checked} onClick={console.log('hey ;)')}/>
                   <h5>{task.title}</h5>
                   <article>{task.description}</article>
                   <article>TODO: Time of task</article>
@@ -68,7 +78,30 @@ function App() {
             })}
             </ul>
           <div>
-              TODO Add Task
+                <form onSubmit={handleNewTaskSubmit}>
+        <label>
+          Task Title:
+          <input
+            type="text"
+            name="title"
+            value={newTask.title || ''}
+            onChange={handleNewTaskChange}
+          />
+        </label>
+        <br />
+        <label>
+          Task Description:
+          <input
+            type="text"
+            name="description"
+            value={newTask.description || ''}
+            onChange={handleNewTaskChange}
+          />
+        </label>
+        <br />
+        <button type="submit">Add Task</button>
+      </form>
+
           </div>
             <div className='statistics'>
               <h4>{(selectedProject.tasks.completed/selectedProject.tasks.total)*100} % Completed</h4>
