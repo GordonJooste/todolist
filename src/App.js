@@ -16,7 +16,7 @@ function App() {
   let checked = false;
 
   const [newTask, setNewTask] = useState({});
-
+  //TODO make the add task work. Probably a problem with the event handlers.
   const handleNewTaskChange = (event) => {
     const { name, value } = event.target;
     setNewTask((prevTask) => ({
