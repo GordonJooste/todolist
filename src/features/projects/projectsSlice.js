@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+// TODO ADD TASK COMPLETE AND INCOMPLETE EDITOR IN ACTIONS
 const initialState = {
   projectArr: [
     {
@@ -73,6 +75,7 @@ export const projectsSlice = createSlice({
       state.projectArr[projectIndex].tasks.tasks = state.projectArr[
         projectIndex
       ].tasks.tasks.filter((task) => task.title !== taskTitle);
+      state.projectArr[projectIndex].tasks.total--;
     },
     removeProject: (state, action) => {
       const { projectTitle } = action.payload;

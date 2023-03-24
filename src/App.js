@@ -17,6 +17,8 @@ function App() {
 
   const [newTask, setNewTask] = useState({});
   //TODO make the add task work. Probably a problem with the event handlers.
+
+
   const handleNewTaskChange = (event) => {
     const { name, value } = event.target;
     setNewTask((prevTask) => ({
@@ -27,14 +29,14 @@ function App() {
 
   const handleNewTaskSubmit = (event) => {
     event.preventDefault();
-    dispatch(addTask({ ...newTask }));
+    dispatch(addTask({ projectTitle: selectedProject.title, taskObj: {title: newTask.title, description: newTask.description, complete: false, date: new Date(selectedDate.getTime()+500000000)} }));
     setNewTask({});
   };
 
   //make the checkboxes work
   // set up the state and redux store
   //connect redux store and state handle changes to make the site dynamic. 
-
+  //TODO MAKE TASK COMPLETE DISPATCH ACTIONS AND WHATNOT
   return (
     <div className="App">
       <section class="hero">
@@ -69,38 +71,39 @@ function App() {
               console.log(tasks);
               return (
                 <li key={task.title}>
+                  <button style={{ float: 'right'}} onClick={() =>{dispatch(removeTask({projectTitle: selectedProject.title, taskTitle: task.title})); }}>X</button>
                   <input type="checkbox" checked={checked} onClick={console.log('hey ;)')}/>
                   <h5>{task.title}</h5>
                   <article>{task.description}</article>
-                  <article>TODO: Time of task</article>
+                  <article>{task.date.getDate()}/{task.date.getMonth()}/{task.date.getFullYear()}</article>
                 </li>
                 )
             })}
             </ul>
           <div>
-                <form onSubmit={handleNewTaskSubmit}>
-        <label>
-          Task Title:
-          <input
-            type="text"
-            name="title"
-            value={newTask.title || ''}
-            onChange={handleNewTaskChange}
-          />
-        </label>
-        <br />
-        <label>
-          Task Description:
-          <input
-            type="text"
-            name="description"
-            value={newTask.description || ''}
-            onChange={handleNewTaskChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Add Task</button>
-      </form>
+          <form onSubmit={handleNewTaskSubmit}>
+            <label>
+              Task Title:
+              <input
+                type="text"
+                name="title"
+                value={newTask.title || ''}
+                onChange={handleNewTaskChange}
+              />
+            </label>
+            <br />
+            <label>
+              Task Description:
+              <input
+                type="text"
+                name="description"
+                value={newTask.description || ''}
+                onChange={handleNewTaskChange}
+              />
+            </label>
+            <br />
+            <button type="submit">Add Task</button>
+          </form>
 
           </div>
             <div className='statistics'>
