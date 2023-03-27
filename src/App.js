@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
-import { selectProjectArr, addTask, addProject, removeProject, removeTask } from './features/projects/projectsSlice';
+import { selectProjectArr, addTask, addProject, removeProject, removeTask, setTaskComplete, setTaskIncomplete } from './features/projects/projectsSlice';
 
 function App() {
 
   const dispatch = useDispatch();
   const projects = useSelector(selectProjectArr);
 
-  const selectedProject = projects[0]
-  const tasks = selectedProject.tasks.tasks;
+  const [selectedProject, setSelectedProject] = useState({project: projects[0]});
+  const tasks = selectedProject.project.tasks.tasks;
   const selectedDate = new Date(Date.now());
   const {day1,day2,day3,day4,day5} = { day1: new Date(selectedDate.getTime()+100000000),day2:new Date(selectedDate.getTime()+200000000),day3:new Date(selectedDate.getTime()+300000000),day4:new Date(selectedDate.getTime()+400000000),day5: new Date(selectedDate.getTime()+500000000)};
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  let checked = false;
 
   const [newTask, setNewTask] = useState({});
-  //TODO make the add task work. Probably a problem with the event handlers.
+  //TODO fix the project changine update issue
 
+
+  const handleOnChange = (projectName,taskName, complete) =>{
+    console.log(projectName + taskName);
+    if(complete){
+      dispatch(setTaskIncomplete({projectTitle: projectName, taskTitle: taskName}));
+    }
+    else{
+      dispatch(setTaskComplete({projectTitle: projectName, taskTitle: taskName}));
+    }
+    
+  };
 
   const handleNewTaskChange = (event) => {
     const { name, value } = event.target;
@@ -29,9 +39,18 @@ function App() {
 
   const handleNewTaskSubmit = (event) => {
     event.preventDefault();
-    dispatch(addTask({ projectTitle: selectedProject.title, taskObj: {title: newTask.title, description: newTask.description, complete: false, date: new Date(selectedDate.getTime()+500000000)} }));
+    dispatch(addTask({ projectTitle: selectedProject.project.title, taskObj: {title: newTask.title, description: newTask.description, complete: false, date: new Date(selectedDate.getTime()+500000000)} }));
     setNewTask({});
   };
+
+  const handleClick = (projectTitle) =>{
+    const projectIndex = projects.findIndex(
+      (project) => project.title === projectTitle
+    );
+    setSelectedProject((prevProject) => ({
+      project: projects[projectIndex]
+    }));
+  }
 
   //make the checkboxes work
   // set up the state and redux store
@@ -52,7 +71,8 @@ function App() {
           <ul>
            {projects.map( (project) => { 
           return (
-            <li key={project.title}> 
+            <li key={project.title} onClick={() => handleClick(project.title)} > 
+              <button style={{ float: 'right'}} onClick={() =>{dispatch(removeProject({projectTitle: project.title})) }}>X</button>
               <h4> {project.title}</h4>
               <article> There are {project.tasks.total} tasks</article>
             </li>
@@ -71,8 +91,15 @@ function App() {
               console.log(tasks);
               return (
                 <li key={task.title}>
-                  <button style={{ float: 'right'}} onClick={() =>{dispatch(removeTask({projectTitle: selectedProject.title, taskTitle: task.title})); }}>X</button>
-                  <input type="checkbox" checked={checked} onClick={console.log('hey ;)')}/>
+                  <button style={{ float: 'right'}} onClick={() =>{dispatch(removeTask({projectTitle: selectedProject.project.title, taskTitle: task.title, completed: task.complete})); }}>X</button>
+                  <input
+                      type="checkbox"
+                      id={`custom-checkbox-${task.title}`}
+                      name={task.title}
+                      value={task.title}
+                      checked={task.complete}
+                      onChange={() => handleOnChange(selectedProject.project.title,task.title, task.complete)}
+                    />
                   <h5>{task.title}</h5>
                   <article>{task.description}</article>
                   <article>{task.date.getDate()}/{task.date.getMonth()}/{task.date.getFullYear()}</article>
@@ -107,7 +134,7 @@ function App() {
 
           </div>
             <div className='statistics'>
-              <h4>{(selectedProject.tasks.completed/selectedProject.tasks.total)*100} % Completed</h4>
+              <h4>{selectedProject.project.tasks.total !==0 ? (selectedProject.project.tasks.completed/selectedProject.project.tasks.total)*100 : 0} % Completed</h4>
             </div>
           </div>
       </div>

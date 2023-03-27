@@ -5,13 +5,13 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   projectArr: [
     {
-      title: 'Project 1',
+      title: 'Project1',
       tasks: {
         tasks: [
           {
             title: 'task1',
             description: 'task 1 description is nice and long',
-            complete: true,
+            complete: false,
             date: new Date(2023, 3, 2),
           },
           {
@@ -22,17 +22,17 @@ const initialState = {
           },
         ],
         total: 2,
-        completed: 1,
+        completed: 0,
       },
     },
     {
-      title: 'Project 2',
+      title: 'Project2',
       tasks: {
         tasks: [
           {
             title: 'p2task1',
             description: 'Project2 task 1 description is nice and long',
-            complete: true,
+            complete: false,
             date: new Date(2023, 3, 2),
           },
           {
@@ -43,7 +43,7 @@ const initialState = {
           },
         ],
         total: 2,
-        completed: 1,
+        completed: 0,
       },
     },
   ],
@@ -68,7 +68,7 @@ export const projectsSlice = createSlice({
       }
     },
     removeTask: (state, action) => {
-      const { projectTitle, taskTitle } = action.payload;
+      const { projectTitle, taskTitle, completed } = action.payload;
       const projectIndex = state.projectArr.findIndex(
         (project) => project.title === projectTitle
       );
@@ -76,6 +76,10 @@ export const projectsSlice = createSlice({
         projectIndex
       ].tasks.tasks.filter((task) => task.title !== taskTitle);
       state.projectArr[projectIndex].tasks.total--;
+      if(completed){
+        state.projectArr[projectIndex].tasks.completed--;
+      }
+      
     },
     removeProject: (state, action) => {
       const { projectTitle } = action.payload;
@@ -83,10 +87,32 @@ export const projectsSlice = createSlice({
         (project) => project.title !== projectTitle
       );
     },
+    setTaskComplete: (state, action) =>{
+      const { projectTitle, taskTitle } = action.payload;
+      const projectIndex = state.projectArr.findIndex(
+        (project) => project.title === projectTitle
+      );
+      const taskIndex = state.projectArr[projectIndex].tasks.tasks.findIndex(
+        (task) => task.title === taskTitle
+      );
+      state.projectArr[projectIndex].tasks.tasks[taskIndex].complete = true; 
+      state.projectArr[projectIndex].tasks.completed++;
+    },
+    setTaskIncomplete: (state, action) =>{
+      const { projectTitle, taskTitle } = action.payload;
+      const projectIndex = state.projectArr.findIndex(
+        (project) => project.title === projectTitle
+      );
+      const taskIndex = state.projectArr[projectIndex].tasks.tasks.findIndex(
+        (task) => task.title === taskTitle
+      );
+      state.projectArr[projectIndex].tasks.tasks[taskIndex].complete = false; 
+      state.projectArr[projectIndex].tasks.completed--;
+    },
   },
 });
 
-export const { addProject, addTask, removeProject, removeTask } =
+export const { addProject, addTask, removeProject, removeTask, setTaskComplete, setTaskIncomplete } =
   projectsSlice.actions;
 
 export const selectProjectArr = (state) => state.projects.projectArr;
